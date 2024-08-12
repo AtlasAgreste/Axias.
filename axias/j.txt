@@ -1,0 +1,52 @@
+function evaluateEmployee() {
+    // Define the criteria and valid values
+    const criteria = {
+        technicalSkills: ["Operating systems", "File management", "Software usage", "Email communication", "Troubleshooting", "Security awareness"],
+        languagesKnown: ["English", "French", "Hindi", "Bengali", "Telugu", "Tamil", "Malayalam", "Kannada", "Urdu", "Russian", "Japanese", "Marathi"],
+        personalSkills: ["Parenting", "Cooking", "Cleaning", "Basic repairs", "Budgeting"],
+        outdatedTech: ["Fax machine", "Landline phones", "Old operating systems"],
+        englishProficiency: ["Yes"],
+        relevantExperience: ["Yes"],
+        irrelevantExperience: ["Yes"]
+    };
+
+    let score = 10;
+
+    // Function to calculate score based on input and valid values
+    function scoreCriteria(id, validValues) {
+        const userInput = document.getElementById(id).value.split(',').map(v => v.trim());
+        return userInput.filter(value => validValues.includes(value)).length;
+    }
+
+    // Calculate the score for each criterion
+    score += scoreCriteria('technicalSkills', criteria.technicalSkills);
+    score += scoreCriteria('languagesKnown', criteria.languagesKnown);
+    score += scoreCriteria('personalSkills', criteria.personalSkills);
+    score += scoreCriteria('outdatedTech', criteria.outdatedTech);
+
+    // Check single selection values
+    const englishProficiency = document.getElementById('englishProficiency').value;
+    const relevantExperience = document.getElementById('relevantExperience').value;
+    const irrelevantExperience = document.getElementById('irrelevantExperience').value;
+
+    score += (englishProficiency === 'Yes' ? 1 : 0);
+    score += (relevantExperience === 'Yes' ? 1 : 0);
+    score += (irrelevantExperience === 'Yes' ? 1 : 0);
+
+    // Calculate total possible score
+    const totalPossibleScore = Object.values(criteria).reduce((acc, val) => acc + val.length, 0) + 3;
+    const percentage = (score / totalPossibleScore) * 100;
+
+    // Determine the grade based on the percentage
+    let grade;
+    if (percentage >= 100) grade = "Special grade";
+    else if (percentage >= 80) grade = "Grade 1";
+    else if (percentage >= 60) grade = "Grade 2";
+    else if (percentage >= 40) grade = "Grade 3";
+    else if (percentage >= 20) grade = "Grade 4";
+    else grade = "Grade 5";
+
+    // Display the result
+    document.getElementById('result').innerText = `Employee grade: ${grade} (${percentage.toFixed(2)}%)`;
+}
+
